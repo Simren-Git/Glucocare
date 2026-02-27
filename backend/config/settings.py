@@ -1,77 +1,115 @@
 ﻿from pathlib import Path
 import os
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-change-this-later')
-DEBUG = os.getenv('DJANGO_DEBUG', 'True').lower() == 'true'
-ALLOWED_HOSTS = []
+
+# ==============================
+# SECURITY SETTINGS
+# ==============================
+
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "")
+
+DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
+
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
+
+
+# ==============================
+# APPLICATIONS
+# ==============================
 
 INSTALLED_APPS = [
-    'corsheaders',          # ðŸ‘ˆ ADD
-    'rest_framework',
-    'core',
-    'django_extensions',
+    "corsheaders",
+    "rest_framework",
+    "django_extensions",
+    "core",
 ]
+
+
+# ==============================
+# MIDDLEWARE
+# ==============================
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',   # ðŸ‘ˆ FIRST
-    'django.middleware.security.SecurityMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
-ROOT_URLCONF = 'config.urls'
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-            ],
-        },
-    },
-]
+# ==============================
+# URLS & WSGI
+# ==============================
 
-WSGI_APPLICATION = 'config.wsgi.application'
+ROOT_URLCONF = "config.urls"
+
+WSGI_APPLICATION = "config.wsgi.application"
+
+
+# ==============================
+# DATABASE (Render PostgreSQL)
+# ==============================
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME', 'glucocare_system'),
-        'USER': os.getenv('DB_USER', 'root'),
-        'PASSWORD': os.getenv('DB_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '3306'),
-    }
+    "default": dj_database_url.parse(
+        os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True
+    )
 }
 
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+
+# ==============================
+# INTERNATIONALIZATION
+# ==============================
+
+LANGUAGE_CODE = "en-us"
+
+TIME_ZONE = "UTC"
+
 USE_I18N = True
+
 USE_TZ = True
 
-STATIC_URL = 'static/'
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ðŸ”¥ IMPORTANT: Disable auth completely
+# ==============================
+# STATIC FILES
+# ==============================
+
+STATIC_URL = "static/"
+
+
+# ==============================
+# DEFAULT AUTO FIELD
+# ==============================
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# ==============================
+# DJANGO REST FRAMEWORK
+# ==============================
+
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+    "DEFAULT_AUTHENTICATION_CLASSES": [],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
     ],
-    'UNAUTHENTICATED_USER': None,
+    "UNAUTHENTICATED_USER": None,
 }
+
+
+# ==============================
+# CORS SETTINGS (React Frontend)
+# ==============================
 
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_HEADERS = [
-    'content-type',
+    "content-type",
 ]
-
 # ==================================================
 # ðŸ“§ EMAIL CONFIGURATION (ADDED â€“ FOR NOTIFICATIONS)
 # ==================================================
