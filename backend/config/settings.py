@@ -4,7 +4,6 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # ==============================
 # SECURITY SETTINGS
 # ==============================
@@ -15,38 +14,48 @@ DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 
-
 # ==============================
 # APPLICATIONS
 # ==============================
 
 INSTALLED_APPS = [
+    # 🔥 REQUIRED DJANGO APPS
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+
+    # Third-party
     "corsheaders",
     "rest_framework",
     "django_extensions",
+
+    # Your apps
     "core",
 ]
-
 
 # ==============================
 # MIDDLEWARE
 # ==============================
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
 ]
-
 
 # ==============================
 # URLS & WSGI
 # ==============================
 
 ROOT_URLCONF = "config.urls"
-
 WSGI_APPLICATION = "config.wsgi.application"
-
 
 # ==============================
 # DATABASE (Render PostgreSQL)
@@ -60,34 +69,27 @@ DATABASES = {
     )
 }
 
-
 # ==============================
 # INTERNATIONALIZATION
 # ==============================
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
 USE_TZ = True
 
-
 # ==============================
-# STATIC FILES (Required for Production)
+# STATIC FILES
 # ==============================
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
 
 # ==============================
 # DEFAULT AUTO FIELD
 # ==============================
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 # ==============================
 # DJANGO REST FRAMEWORK
@@ -101,21 +103,15 @@ REST_FRAMEWORK = {
     "UNAUTHENTICATED_USER": None,
 }
 
-
 # ==============================
-# CORS SETTINGS (React Frontend)
+# CORS SETTINGS
 # ==============================
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ALLOW_HEADERS = [
-    "content-type",
-]
-
-
-# ==================================================
-# EMAIL CONFIGURATION (SMTP via Gmail)
-# ==================================================
+# ==============================
+# EMAIL CONFIGURATION
+# ==============================
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
