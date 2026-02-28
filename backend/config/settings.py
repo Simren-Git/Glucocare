@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY SETTINGS
 # ==============================
 
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "")
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() == "true"
 
@@ -75,10 +75,11 @@ USE_TZ = True
 
 
 # ==============================
-# STATIC FILES
+# STATIC FILES (Required for Production)
 # ==============================
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 
 # ==============================
@@ -110,17 +111,19 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_HEADERS = [
     "content-type",
 ]
+
+
 # ==================================================
-# ðŸ“§ EMAIL CONFIGURATION (ADDED â€“ FOR NOTIFICATIONS)
+# EMAIL CONFIGURATION (SMTP via Gmail)
 # ==================================================
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
-EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
+EMAIL_HOST = os.getenv("EMAIL_HOST", "smtp.gmail.com")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True").lower() == "true"
 
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
